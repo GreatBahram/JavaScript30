@@ -12,7 +12,7 @@ const playAudio = function (e) {
   audio.currentTime = 0;
 
   // Add the class for animation
-  elm.classList.toggle("playing");
+  elm.classList.add("playing");
 
   audio.play();
 };
@@ -20,9 +20,11 @@ const playAudio = function (e) {
 window.addEventListener("keypress", playAudio);
 
 // Remove the playing class when the transition procedure is finished.
-const removeTransition = (e) => {
-  if (e.propertyName !== "transform") return;
-  e.target.classList.remove("playing");
-};
+// const removeTransition = ;
 const keys = document.querySelectorAll(".key");
-keys.forEach((key) => key.addEventListener("transitionend", removeTransition));
+keys.forEach((key) =>
+  key.addEventListener("transitionend", (e) => {
+    if (e.propertyName !== "transform") return;
+    e.target.classList.remove("playing");
+  })
+);
