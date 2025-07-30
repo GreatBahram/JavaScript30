@@ -17,14 +17,16 @@ const playAudio = function (e) {
   audio.play();
 };
 
-window.addEventListener("keypress", playAudio);
-
-// Remove the playing class when the transition procedure is finished.
-// const removeTransition = ;
-const keys = document.querySelectorAll(".key");
-keys.forEach((key) =>
-  key.addEventListener("transitionend", (e) => {
+const init = function () {
+  const removeTransition = (e) => {
     if (e.propertyName !== "transform") return;
     e.target.classList.remove("playing");
-  })
-);
+  };
+  window.addEventListener("keypress", playAudio);
+
+  const keys = document.querySelectorAll(".key");
+  keys.forEach((k) => k.addEventListener("transitionend", removeTransition));
+};
+init();
+
+export { playAudio };
