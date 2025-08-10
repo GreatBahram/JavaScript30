@@ -1,20 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>HTML5 Canvas</title>
-  <link rel="icon" href="https://fav.farm/🔥" />
-</head>
-<body>
-<canvas id="draw" width="800" height="800"></canvas>
-<script>
-</script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 Canvas</title>
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <canvas id="draw" width="800" height="800"></canvas>
+    <script>
+      const canvas = document.querySelector("#draw");
 
-<style>
-  html, body {
-    margin: 0;
-  }
-</style>
+      // You can have either 2d or 3d(mostly for gaming stuff)
+      const ctx = canvas.getContext("2d");
+      // Hue is used to change the color, check https://mothereffinghsl.com/
+      let hue = 0;
+      const maxHue = 360;
 
-</body>
+      // Direction is used to increase the width of the stroke and after hitting the max we reverse it
+      let direction = true;
+      const maxLineWidth = 100;
+
+      // Make it as big as the current window
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      // ctx.strokeStyle = "#BADA55";
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      ctx.lineWidth = 0;
+
+      let isDrawing = false;
+      let lastX;
+      let lastY;
+
+      canvas.addEventListener("mousedown", (e) => {
+        isDrawing = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+      });
+      canvas.addEventListener("mouseout", () => {
+        isDrawing = false;
+      });
+      canvas.addEventListener("mouseup", () => {
+        isDrawing = false;
+      });
+
+      const draw = function (e) {
+        if (!isDrawing) return;
+
+        // Set the color of the stroke
+        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+
+        // Update the values so we can have a continuous line
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+
+        // Handle the hsl coloring
+        hue++;
+        if (hue > maxHue) hue = 0;
+
+        // Take care of the lineWidth either increase ++ or decrease --
+        if (ctx.lineWidth > maxLineWidth || ctx.lineWidth <= 1)
+          direction = !direction;
+        if (direction) ctx.lineWidth++;
+        else ctx.lineWidth--;
+      };
+
+      canvas.addEventListener("mousemove", draw);
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+    </style>
+  </body>
 </html>
