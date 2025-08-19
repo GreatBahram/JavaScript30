@@ -7,6 +7,19 @@
     <link rel="icon" href="https://fav.farm/🔥" />
   </head>
   <body>
-    <script></script>
+    <script>
+      const pressed = [];
+      const secretCode = "bahram";
+      document.addEventListener("keyup", (e) => {
+        pressed.push(e.key);
+        
+        // Remove extra items until we have secretCode.length item in the array (0 means start from zero).
+        pressed.splice(0, pressed.length - secretCode.length);
+        
+        if (pressed.join("") == secretCode) {
+          cornify_add();
+        }
+      });
+    </script>
   </body>
 </html>
