@@ -15,6 +15,17 @@
 
     // and we want to make a copy of it.
 
+    // to have a copy one can call the 'slice' method
+    const playersCopy = players.slice()
+    
+    // using the ... spread is also possible
+    const playersCopy2 = [...players]
+
+    // using the 'concat' method on the array
+    const playersCopy3 = [].concat(players)
+
+    // uisng 'Array.from'
+    const playersCopy4 = Array.from(players)
     // You might think we can just do something like this:
 
     // however what happens when we update that array?
@@ -43,6 +54,9 @@
       age: 80
     };
 
+    const captain = Object.assign({}, person, {age: 12})
+
+    const personCloned = structuredClone(person)
     // and think we make a copy:
 
     // how do we take a copy instead?
