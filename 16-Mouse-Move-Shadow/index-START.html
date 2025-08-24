@@ -1,41 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Mouse Shadow</title>
-  <link rel="icon" href="https://fav.farm/🔥" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mouse Shadow</title>
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <div class="hero">
+      <h1 contenteditable>🔥WOAH!</h1>
+    </div>
 
-  <div class="hero">
-    <h1 contenteditable>🔥WOAH!</h1>
-  </div>
+    <style>
+      html {
+        color: black;
+        font-family: sans-serif;
+      }
 
-  <style>
-  html {
-    color: black;
-    font-family: sans-serif;
-  }
+      body {
+        margin: 0;
+      }
 
-  body {
-    margin: 0;
-  }
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+      }
 
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: black;
-  }
+      h1 {
+        text-shadow: 10px 10px 0 rgba(0, 0, 0, 1);
+        font-size: 100px;
+      }
+    </style>
 
-  h1 {
-    text-shadow: 10px 10px 0 rgba(0,0,0,1);
-    font-size: 100px;
-  }
-  </style>
+    <script>
+      const hero = document.querySelector(".hero");
+      const text = document.querySelector("h1");
 
-<script>
-</script>
-</body>
+      const walk = 100; // 100px
+
+      const shadow = function (e) {
+        // offestWidth and offsetHeight = (border + padding + content)
+        const { offsetWidth: width, offsetHeight: height } = hero;
+
+        // get the x/y position of the mount pointer
+        let { offsetX: x, offsetY: y } = e;
+
+        // when hovering over children like h1, then x/y values are wrong
+        // here we need to take care of that
+        if (this !== e.target) {
+          x += e.target.offsetLeft;
+          y += e.target.offsetTop;
+        }
+        // here we want to define how far out shadow can stretch, this little math-formula
+        // will bound the shadow
+        // x / width gives us a value between 0,1 0=> far left, 1=> far right;
+        // walk / 2 would centre the shadow
+        const xWalk = Math.round((x / width) * walk - walk / 2);
+        const yWalk = Math.round((y / height) * walk - walk / 2);
+
+        text.style.textShadow = `${xWalk}px ${yWalk}px 0 red`;
+      };
+
+      hero.addEventListener("mousemove", shadow);
+    </script>
+  </body>
 </html>
